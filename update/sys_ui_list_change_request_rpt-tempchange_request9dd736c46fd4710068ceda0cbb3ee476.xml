@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="change_request" version="2" view="rpt-tempchange_request9dd736c46fd4710068ceda0cbb3ee476">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>number</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>557fae92db58e34096b17d8bbf961997</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>short_description</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>d97fae92db58e34096b17d8bbf961997</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>cmdb_ci</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>5d7fae92db58e34096b17d8bbf961997</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>assigned_to</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>dd7fae92db58e34096b17d8bbf961997</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>approval</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>517fae92db58e34096b17d8bbf961998</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>type</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>d17fae92db58e34096b17d8bbf961998</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>state</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>557fae92db58e34096b17d8bbf961998</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>start_date</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>d57fae92db58e34096b17d8bbf961998</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>end_date</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>597fae92db58e34096b17d8bbf961998</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_downtime</element>
+            <list_id display_value="change_request" element="NULL" name="change_request" parent="NULL" relationship="NULL" sys_domain="global" view="4f0f62d2db58e34096b17d8bbf961997">d97fae92db58e34096b17d8bbf961996</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>9</position>
+            <sum>false</sum>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_id>d97fae92db58e34096b17d8bbf961998</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>change_request</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>LGOMEZ</sys_created_by>
+            <sys_created_on>2018-09-04 17:24:46</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_domain>global</sys_domain>
+            <sys_id>d97fae92db58e34096b17d8bbf961996</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name/>
+            <sys_package/>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
+            <sys_update_name/>
+            <sys_updated_by>LGOMEZ</sys_updated_by>
+            <sys_updated_on>2018-09-04 17:24:46</sys_updated_on>
+            <sys_user/>
+            <view display_value="Rpt-tempchange_request9dd736c46fd4710068ceda0cbb3ee476" name="rpt-tempchange_request9dd736c46fd4710068ceda0cbb3ee476">4f0f62d2db58e34096b17d8bbf961997</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

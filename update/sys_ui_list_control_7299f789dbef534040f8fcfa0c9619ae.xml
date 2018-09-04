@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_ui_list_control">
+    <sys_ui_list_control action="INSERT_OR_UPDATE">
+        <columns_condition/>
+        <disable_listv3>false</disable_listv3>
+        <edit_condition/>
+        <edit_default_filter/>
+        <edit_roles/>
+        <empty_condition/>
+        <filter_condition/>
+        <filter_roles/>
+        <hierarchical_lists>false</hierarchical_lists>
+        <label>Change Reviews</label>
+        <link_condition/>
+        <link_roles/>
+        <list_edit_insert_row>false</list_edit_insert_row>
+        <list_edit_ref_qual_tag/>
+        <list_edit_type>disabled</list_edit_type>
+        <mode>grid</mode>
+        <name>change_request</name>
+        <new_condition/>
+        <new_roles/>
+        <omit_columns_if_empty>false</omit_columns_if_empty>
+        <omit_drilldown_link>true</omit_drilldown_link>
+        <omit_edit_button>true</omit_edit_button>
+        <omit_filters>true</omit_filters>
+        <omit_if_empty>true</omit_if_empty>
+        <omit_links>true</omit_links>
+        <omit_new_button>true</omit_new_button>
+        <related_list>x_sthc_change_revi_change_review_table.change</related_list>
+        <search_method>keywords</search_method>
+        <sys_class_name>sys_ui_list_control</sys_class_name>
+        <sys_created_by>LGOMEZ</sys_created_by>
+        <sys_created_on>2018-07-25 18:49:56</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_domain>global</sys_domain>
+        <sys_id>7299f789dbef534040f8fcfa0c9619ae</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>change_request</sys_name>
+        <sys_overrides display_value="">global</sys_overrides>
+        <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
+        <sys_update_name>sys_ui_list_control_7299f789dbef534040f8fcfa0c9619ae</sys_update_name>
+        <sys_updated_by>LGOMEZ</sys_updated_by>
+        <sys_updated_on>2018-07-25 18:49:56</sys_updated_on>
+    </sys_ui_list_control>
+</record_update>

@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function($scope, $window) {
+  /* widget controller */
+  var c = this;
+	
+	
+	c.open = function(id){
+	var h = screen.height - 200;
+  var w = screen.width - 900;
+	var url = '/change_request.do?sys_id=' + id;
+  var myWindow = window.open(url, "", "resizable=1,width=" + w +",height=" + h);
+
+	}
+	c.reviewAll = function(){
+		c.data.reviewAll = true;
+		c.server.update();
+	}
+	
+	c.reviewChange = function(id){
+		c.data.changeID = id;
+		c.server.update();
+	}
+	
+	c.removeReview = function(id){
+		c.data.changeIDr = id;
+		c.server.update();
+	}
+	
+	c.concernChange = function(id){
+		c.data.concern = id;
+		c.server.update();
+	}
+		
+	c.concernRemove = function(id){
+		c.data.concernR = id;
+		c.server.update();
+	}
+		
+	$scope.reviewed = function(id){
+		var array = c.data.reviewJSON;
+		var result = array.indexOf(id);
+		if(result > 1)
+			return true;
+		return false;
+	}
+	
+	$scope.concerns = function(id){
+		var array = c.data.concernJSON;
+		var result = array.indexOf(id);
+		if(result > 1)
+			return true;
+		return false;
+	}
+	
+	
+	
+	c.sw = function(sw){
+		c.server.update();
+		
+	}
+	
+	
+	
+	
+	
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.changeContainer{
+  position: relative;
+  width:90%;
+  height: auto;
+  background-color:#fff;
+  margin: auto;
+  border: 2px solid purple;
+  border-radius: 6px;
+  margin-top:5px;
+  padding:5px;
+  
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.review{
+ position: relative;
+  float: right;
+}
+.concern{
+ padding-right:40px; 
+}
+.image{
+  bottom:-20px;
+}
+
+
+//TOGGLE SWITCH 2
+@import url(//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,900);
+
+
+*, *:before, *:after {
+	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+body {
+  font-family: "Lato", "Helvetica Neue", sans-serif;
+  margin: 7.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #5F6062;
+}
+
+form {
+  width: 35%;
+  margin: 0 auto;
+  background-color: #f6f6f6;
+  padding: 1rem;
+  border-radius: 3px;
+  
+  &amp;:before { 
+   content: ''; 
+   display: block; 
+  }
+
+  &amp;:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+/* Toggle Switch */
+
+input[type='checkbox'].switch-control {
+  margin-left: -9999px;
+  position: absolute;
+
+  &amp; ~ label {
+    float: left;
+    width: 100%;
+    position: relative;
+    line-height: 3.75rem;
+    margin: 0.2rem 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-align: left;
+
+    &amp;:before, &amp;:after {
+      right: 0;
+      position: absolute;
+      display: block;
+      top: 0;
+      bottom: 0;
+      content: ' ';
+      width: 8.75rem;
+      background-color: #C41230;
+      border-radius: 3px;
+      transition: all 100ms ease-in;
+      background-size: 20px 9px;
+    }
+
+    &amp;:before {
+      border: 1px solid #CFD4D8;
+      content: 'OFF';
+      text-align: left;
+      text-indent: 2.15rem;
+      line-height: 3;
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    &amp;:after {
+      right: 6.8rem;
+      width: 1.75rem;
+      top: 0.2rem;
+      bottom: 0.25rem;
+      margin-left: 0.2rem;
+      background-color: #fff;
+      border-radius: 2px;
+      box-shadow: 0 .1rem 0 rgba(0,0,0,0.3);
+      border: 1px solid #A7A9AC;
+      content: '...';
+      color: #5F6062;
+      font-weight: 900;
+      line-height: .7;
+      text-align: center;
+      font-size: .95rem;
+    }
+  }
+
+  &amp;:checked {
+
+    &amp; ~ label:before {
+      background-color: #8BC300;
+      content: 'ON';
+      text-indent: .5rem;
+      text-align: left;
+    }
+
+    &amp; ~ label:after {
+      right: .2rem;
+    }
+  }
+}
+
+
+
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>change_review_emergency</id>
+        <internal>false</internal>
+        <link/>
+        <name>Change Review Emergency</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+	var ch = new x_sthc_change_revi.Change_Review();
+	if(!input){
+	
+	data.changes = [];
+	data.changes = ch.getEmergencyList();
+		
+	data.review = [];
+  data.review = ch.getReviewList();
+	data.reviewJSON = JSON.stringify(data.review);
+		
+	data.concernArr = [];
+	data.concernArr = ch.getConcernList();
+	data.concernJSON = JSON.stringify(data.concernArr);
+		
+		data.groups = [];
+		data.groups = getGroupsArray(gs.getUserID());
+	}
+
+	if(input){
+		
+		if(input.reviewAll == true){
+			var cr = new GlideRecord('change_request');
+			cr.addEncodedQuery('type=emergency^active=true');
+			cr.query();
+			while(cr.next()){
+				reviewChange(cr.sys_id,gs.getUserID());
+			}
+			data.review = ch.getReviewList();
+	    data.reviewJSON = JSON.stringify(data.review);
+			input.reviewAll = '';
+			data.reviewAll = '';
+			
+		}
+		
+		if((input.changeID != '')&&(input.changeID)){
+			reviewChange(input.changeID,gs.getUserID(),input.group);
+			data.review = ch.getReviewList();
+	    data.reviewJSON = JSON.stringify(data.review);
+			input.changeID = '';
+			data.changeID = '';
+		}
+		
+			if((input.changeIDr != '')&&(input.changeIDr)){
+			removeReview(input.changeIDr,gs.getUserID());
+			data.review = ch.getReviewList();
+	    data.reviewJSON = JSON.stringify(data.review);
+			input.changeIDr = '';
+			data.changeIDr = '';
+		}
+		
+		if((input.concern != '')&&(input.concern)){
+			concernChange(input.concern,gs.getUserID());
+	    data.concernArr = ch.getConcernList();
+	    data.concernJSON = JSON.stringify(data.concernArr);
+			input.concern = '';
+			data.concern = '';
+		}
+		
+		if((input.concernR != '')&&(input.concernR)){
+			removeConcern(input.concernR,gs.getUserID());
+	    data.concernArr = ch.getConcernList();
+	    data.concernJSON = JSON.stringify(data.concernArr);
+			input.concernR = '';
+			data.concernR = '';
+		}
+		
+		
+	}
+})();
+
+function reviewChange(id,user,group){
+	var list = getGroups(user,group).split(',');
+	for(i = 1; i<list.length; i++){
+			var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
+	gr.initialize();
+	gr.setValue('change',id);
+	gr.setValue('user',user);
+	gr.setValue('groups', list[i]);
+	gr.insert();
+	}
+
+}
+
+function removeReview(id,user){
+	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
+	gr.addQuery('change.sys_id', id);
+	gr.addQuery('user.sys_id',user);
+	gr.query();
+	while(gr.next()){
+		gr.deleteRecord();
+	}
+	
+}
+
+function concernChange(id,user){
+	//var list = getGroups(user);
+	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
+	gr.initialize();
+	gr.setValue('change',id);
+	gr.setValue('user',user);
+	gr.setValue('concern',true);
+	//gr.setValue('groups', list);
+	gr.insert();
+}
+
+function removeConcern(id,user){
+	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
+	gr.addQuery('change.sys_id', id);
+	gr.addQuery('user.sys_id',user);
+	gr.query();
+	while(gr.next()){
+		gr.deleteRecord();
+	}
+	
+}
+
+function getGroups(user,group){
+	var list = '';
+	var gr = new GlideRecord('sys_user_grmember');
+	if(group){
+		gr.addQuery('sys_id',group);
+	}
+	gr.addQuery('user', user);
+	gr.addQuery('group.u_assign',true);
+	gr.addQuery('group.active',true);
+	gr.addQuery('group.type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
+	gr.query();
+	while(gr.next()){
+		list += "," + gr.getValue('group');
+		
+	}
+	return list;
+	
+}
+
+function getGroupsArray(user){
+	var list = [];
+	var gr = new GlideRecord('sys_user_grmember');
+	gr.addQuery('user.sys_id', user);
+	gr.addQuery('group.u_assign','true');
+	gr.addQuery('group.active','true');
+	gr.addQuery('group.type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
+	gr.query();
+	while(gr.next()){
+		var group = {};
+		group.id = gr.getUniqueValue();
+		group.name = gr.getDisplayValue('group');
+		list.push(group);
+	}
+	return (list);
+	
+}
+
+
+		]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>LGOMEZ</sys_created_by>
+        <sys_created_on>2018-08-02 03:50:57</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>e6b8b5a3dba35b4096b17d8bbf9619d6</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Change Review Emergency</sys_name>
+        <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
+        <sys_update_name>sp_widget_e6b8b5a3dba35b4096b17d8bbf9619d6</sys_update_name>
+        <sys_updated_by>LGOMEZ</sys_updated_by>
+        <sys_updated_on>2018-08-20 20:15:00</sys_updated_on>
+        <template><![CDATA[<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
+
+
+<div>
+  
+  
+ <form>
+  <input ng-model="data.sw" type="checkbox" id="switch" class="switch-control">
+  <label for="switch">Show un-reviewed only</label>
+</form>
+  <form>
+     <input ng-model="data.con" type="checkbox" id="switchC" class="switch-control">
+  <label for="switchC">Show only changes with Concerns</label>
+  </form>
+  <form>
+     <a class="pointer" ng-click="c.reviewAll()">Review All</a>
+  </form>
+  
+  <!--UN-REVIEWED ONLY -->
+  <div ng-show="reviewed(change.id) == false && data.sw == true && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
+    <h4>{{change.number}}</h4>
+    <div class="title">
+      <b>{{change.short_description}}</b><br>
+      {{change.description}}
+    </div>
+    <div class="detail" >
+      <b>Implmentation Start: </b>{{change.start}}<br>
+      <b>Implmentation End: </b>{{change.end}}<br>
+      <b>Assignment Group: </b>{{change.group}}<br>
+      <b>Configuration Item: </b>{{change.ci}}<br>
+    </div>
+   
+    
+    <a class="pointer" ng-click="c.open(change.id)">Read More Detail</a>
+    
+    <span class="review pointer">
+      
+      <a ng-if="concerns(change.id) == false" class="concern" ng-click="c.concernChange(change.id)">I have a concern</a>
+      <a ng-if="concerns(change.id) == true" class="concern" ng-click="c.concernRemove(change.id)">Flaged as a concern<img src="alert.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == false" ng-click="c.reviewChange(change.id)">Mark as Reviewed<img src="emptystar.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == true" ng-click="c.removeReview(change.id)">Set to Un-Reviewed<img src="star.png" width="30" height="30"></a>
+    </span>
+  </div>
+  
+ <!--BOTH SWITCHES OFF -->
+  <div ng-show="!data.sw && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
+    <h4>{{change.number}}</h4>
+    <div class="title">
+      <b>{{change.short_description}}</b><br>
+      {{change.description}}
+    </div>
+    <div class="detail" >
+      <b>Implmentation Start: </b>{{change.start}}<br>
+      <b>Implmentation End: </b>{{change.end}}<br>
+      <b>Assignment Group: </b>{{change.group}}<br>
+      <b>Configuration Item: </b>{{change.ci}}<br>
+    </div>
+   
+    
+    <a class="pointer" ng-click="c.open(change.id)">Read More Detail</a>
+    
+    <span class="review pointer">
+      
+      <a ng-if="concerns(change.id) == false" class="concern" ng-click="c.concernChange(change.id)">I have a concern</a>
+      <a ng-if="concerns(change.id) == true" class="concern" ng-click="c.concernRemove(change.id)">Flaged as a concern<img src="alert.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == false" ng-click="c.reviewChange(change.id)">Mark as Reviewed<img src="emptystar.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == true" ng-click="c.removeReview(change.id)">Set to Un-Reviewed<img src="star.png" width="30" height="30"></a>
+    </span>
+  </div>
+  
+  
+  <div ng-show="(concerns(change.id) == true || reviewed(change.id) == false) && data.con == true && data.sw == true" ng-repeat="change in data.changes" class="changeContainer" >
+    <h4>{{change.number}}</h4>
+    <div class="title">
+      <b>{{change.short_description}}</b><br>
+      {{change.description}}
+    </div>
+    <div class="detail" >
+      <b>Implmentation Start: </b>{{change.start}}<br>
+      <b>Implmentation End: </b>{{change.end}}<br>
+      <b>Assignment Group: </b>{{change.group}}<br>
+      <b>Configuration Item: </b>{{change.ci}}<br>
+    </div>
+   
+    
+    <a class="pointer" ng-click="c.open(change.id)">Read More Detail</a>
+    
+    <span class="review pointer">
+      
+      <a ng-if="concerns(change.id) == false" class="concern" ng-click="c.concernChange(change.id)">I have a concern</a>
+      <a ng-if="concerns(change.id) == true" class="concern" ng-click="c.concernRemove(change.id)">Flaged as a concern<img src="alert.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == false" ng-click="c.reviewChange(change.id)">Mark as Reviewed<img src="emptystar.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == true" ng-click="c.removeReview(change.id)">Set to Un-Reviewed<img src="star.png" width="30" height="30"></a>
+    </span>
+  </div>
+  
+  
+  <div ng-show="concerns(change.id) == true && data.con == true && !data.sw" ng-repeat="change in data.changes" class="changeContainer" >
+    <h4>{{change.number}}</h4>
+    <div class="title">
+      <b>{{change.short_description}}</b><br>
+      {{change.description}}
+    </div>
+    <div class="detail" >
+      <b>Implmentation Start: </b>{{change.start}}<br>
+      <b>Implmentation End: </b>{{change.end}}<br>
+      <b>Assignment Group: </b>{{change.group}}<br>
+      <b>Configuration Item: </b>{{change.ci}}<br>
+    </div>
+   
+    
+    <a class="pointer" ng-click="c.open(change.id)">Read More Detail</a>
+    
+    <span class="review pointer">
+      
+      <a ng-if="concerns(change.id) == false" class="concern" ng-click="c.concernChange(change.id)">I have a concern</a>
+      <a ng-if="concerns(change.id) == true" class="concern" ng-click="c.concernRemove(change.id)">Flaged as a concern<img src="alert.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == false" ng-click="c.reviewChange(change.id)">Mark as Reviewed<img src="emptystar.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == true" ng-click="c.removeReview(change.id)">Set to Un-Reviewed<img src="star.png" width="30" height="30"></a>
+    </span>
+  </div>
+  
+  
+    
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

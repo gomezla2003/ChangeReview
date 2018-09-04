@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_sthc_change_revi.Change_Review</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>Change_Review</name>
+        <script><![CDATA[var Change_Review = Class.create();
+Change_Review.prototype = {
+    initialize: function() {
+    },
+
+	getAppList:function(){
+		var changes = [];
+		var crChange = new GlideRecord('change_request');
+		crChange.addEncodedQuery('stateIN10,12,9^type=Normal^ORtype=normal^cmdb_ci.sys_class_name=cmdb_ci_appl^ORcmdb_ci.sys_class_name=u_application_modules^ORcmdb_ci.sys_class_name=u_cmdb_ci_epic_ini');
+		crChange.orderBy('start_date');
+		crChange.setLimit(20);
+		crChange.query();
+		
+		while (crChange.next()){
+			var change ={};
+			change.id = crChange.getUniqueValue();
+			change.short_description = crChange.getValue('short_description');
+			change.number = crChange.getValue('number');
+			change.description = crChange.getValue('description');
+			change.start = crChange.getDisplayValue('start_date');
+			change.end = crChange.getDisplayValue('end_date');
+			change.group = crChange.getDisplayValue('assignment_group');
+			change.ci = crChange.getDisplayValue('cmdb_ci');
+			change.risk = crChange.getDisplayValue('risk');
+			changes.push(change);
+			
+		}
+		return (changes);
+	},
+	
+	getInfraList:function(){
+		var changes = [];
+		var crChange = new GlideRecord('change_request');
+		crChange.addEncodedQuery('stateIN10,12,9^type=Normal^ORtype=normal^cmdb_ci.sys_class_name!=cmdb_ci_appl^cmdb_ci.sys_class_name!=u_application_modules^cmdb_ci.sys_class_name!=u_cmdb_ci_epic_ini');
+		crChange.orderBy('start_date');
+		crChange.setLimit(20);
+		crChange.query();
+		
+		while (crChange.next()){
+			var change ={};
+			change.id = crChange.getUniqueValue();
+			change.short_description = crChange.getValue('short_description');
+			change.number = crChange.getValue('number');
+			change.description = crChange.getValue('description');
+			change.start = crChange.getDisplayValue('start_date');
+			change.end = crChange.getDisplayValue('end_date');
+			change.group = crChange.getDisplayValue('assignment_group');
+			changes.push(change);
+			
+		}
+		return (changes);
+	},
+	
+	getEmergencyList:function(){
+		var changes = [];
+		var crChange = new GlideRecord('change_request');
+		crChange.addEncodedQuery('type=emergency^active=true');
+		crChange.orderBy('start_date');
+		crChange.query();
+		
+		while (crChange.next()){
+			var change ={};
+			change.id = crChange.getUniqueValue();
+			change.short_description = crChange.getValue('short_description');
+			change.number = crChange.getValue('number');
+			change.description = crChange.getValue('description');
+			change.start = crChange.getDisplayValue('start_date');
+			change.end = crChange.getDisplayValue('end_date');
+			change.group = crChange.getDisplayValue('assignment_group');
+			changes.push(change);
+			
+		}
+		return (changes);
+	},
+	
+	
+	
+	getReviewList: function(){
+		
+		var currentUser = gs.getUserID();
+		var groupArray = getGroupsArray(currentUser).split(',');
+		var changeSessions = [];
+		var cr = new GlideRecord('x_sthc_change_revi_change_review_table');
+		var or = cr.addQuery('groups','1');
+		for(i = 0; i<groupArray.length; i++){
+		or.addOrCondition('groups.sys_id', groupArray[i]);
+		}
+		cr.query();
+		while (cr.next()){
+			var rChange = {};
+			rChange.change = getChangeID(cr.change.sys_id);
+			rChange.groups = cr.getValue('groups');
+			rChange.group = cr.getDisplayValue('groups');
+			changeSessions.push(rChange);
+		}
+		return(changeSessions);
+	},
+	
+	
+		getFullReviewList: function(){
+		
+		var currentUser = gs.getUserID();
+		var groupArray = getGroupsArray(currentUser).split(',');
+		var changeSessions = [];
+		var cr = new GlideRecord('x_sthc_change_revi_change_review_table');
+		cr.query();
+		while (cr.next()){
+			var rChange = {};
+			rChange.change = getChangeID(cr.change.sys_id);
+			rChange.groups = cr.getValue('groups');
+			rChange.group = cr.getDisplayValue('groups');
+			changeSessions.push(rChange);
+		}
+		return(changeSessions);
+	},
+	
+	
+		getConcernList: function(){
+		
+		var currentUser = gs.getUserID();
+		var changeConcerns = [];
+		var cr = new GlideRecord('x_sthc_change_revi_change_review_table');
+		cr.addQuery('user.sys_id',currentUser);
+		cr.addQuery('concern',true);
+		cr.query();
+		while (cr.next()){
+			var cChange = {};
+			cChange.change = getChangeID(cr.change.sys_id);
+			
+			changeConcerns.push(cChange);
+		}
+		return(changeConcerns);
+	},
+	
+    type: 'Change_Review'
+};
+
+function getChangeID(change){
+	var cid = new GlideRecord('change_request');
+	cid.addQuery('sys_id',change);
+	cid.query();
+	while(cid.next()){
+		return cid.getUniqueValue();
+	}
+	
+}
+
+function getGroupsArray(user){
+	var list = [];
+	var gr = new GlideRecord('sys_user_grmember');
+	gr.addQuery('user.sys_id', user);
+	gr.addQuery('group.u_assign','true');
+	gr.addQuery('group.active','true');
+	gr.addQuery('group.type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
+	gr.query();
+	while(gr.next()){
+		//var group = {};
+		//group.id = gr.getUniqueValue();
+		//group.name = gr.getDisplayValue('group');
+		//list.push(group);
+		list += ","+gr.getValue('group');
+	}
+	return (list);
+	
+}]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>LGOMEZ</sys_created_by>
+        <sys_created_on>2018-07-25 16:34:58</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>99dadb41db6f534040f8fcfa0c961905</sys_id>
+        <sys_mod_count>64</sys_mod_count>
+        <sys_name>Change_Review</sys_name>
+        <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
+        <sys_update_name>sys_script_include_99dadb41db6f534040f8fcfa0c961905</sys_update_name>
+        <sys_updated_by>LGOMEZ</sys_updated_by>
+        <sys_updated_on>2018-09-04 17:17:12</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_ui_application">
+    <sys_ui_application action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <hint/>
+        <name>Change Review</name>
+        <order/>
+        <roles>x_sthc_change_revi.user</roles>
+        <sys_class_name>sys_ui_application</sys_class_name>
+        <sys_created_by>LGOMEZ</sys_created_by>
+        <sys_created_on>2018-07-25 15:32:15</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_domain>global</sys_domain>
+        <sys_id>e58c0f8ddbeb534040f8fcfa0c961995</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Change Review</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
+        <sys_update_name>sys_ui_application_e58c0f8ddbeb534040f8fcfa0c961995</sys_update_name>
+        <sys_updated_by>LGOMEZ</sys_updated_by>
+        <sys_updated_on>2018-07-25 15:32:15</sys_updated_on>
+    </sys_ui_application>
+</record_update>
