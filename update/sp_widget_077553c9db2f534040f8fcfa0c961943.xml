@@ -393,7 +393,7 @@ function getGroupsArray(user){
         <sys_created_on>2018-07-25 16:11:41</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>077553c9db2f534040f8fcfa0c961943</sys_id>
-        <sys_mod_count>324</sys_mod_count>
+        <sys_mod_count>325</sys_mod_count>
         <sys_name>Change Review Application</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy/>
@@ -401,7 +401,7 @@ function getGroupsArray(user){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sp_widget_077553c9db2f534040f8fcfa0c961943</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-09-17 18:16:46</sys_updated_on>
+        <sys_updated_on>2018-09-17 18:43:07</sys_updated_on>
         <template><![CDATA[<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
 <div>
 <form>
@@ -424,7 +424,7 @@ function getGroupsArray(user){
   </form>
 
   <!--UN-REVIEWED ONLY -->
-  <div ng-show="reviewed(change.id) == false && data.sw == true && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
+  <div ng-if="reviewed(change.id) == false && data.sw == true && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>
@@ -454,7 +454,7 @@ function getGroupsArray(user){
   </div>
   
  <!--BOTH SWITCHES OFF -->
-  <div ng-show="!data.sw && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
+  <div ng-if="!data.sw && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>
@@ -485,7 +485,7 @@ function getGroupsArray(user){
   </div>
   
   
-  <div ng-show="(concerns(change.id) == true || reviewed(change.id) == false) && data.con == true && data.sw == true" ng-repeat="change in data.changes" class="changeContainer" >
+  <div ng-if="(concerns(change.id) == true || reviewed(change.id) == false) && data.con == true && data.sw == true" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>
@@ -516,7 +516,7 @@ function getGroupsArray(user){
   </div>
   
   
-  <div ng-show="concerns(change.id) == true && data.con == true && !data.sw" ng-repeat="change in data.changes" class="changeContainer" >
+  <div ng-if="concerns(change.id) == true && data.con == true && !data.sw" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>

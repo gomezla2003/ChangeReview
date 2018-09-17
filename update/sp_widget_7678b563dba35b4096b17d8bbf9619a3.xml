@@ -61,8 +61,7 @@
 		
 	}
 	
-	
-	
+
 	
 	
 }]]></client_script>
@@ -389,7 +388,7 @@ function getGroupsArray(user){
         <sys_created_on>2018-08-02 03:49:53</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>7678b563dba35b4096b17d8bbf9619a3</sys_id>
-        <sys_mod_count>19</sys_mod_count>
+        <sys_mod_count>24</sys_mod_count>
         <sys_name>Change Review Infrastructure</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy/>
@@ -397,7 +396,7 @@ function getGroupsArray(user){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sp_widget_7678b563dba35b4096b17d8bbf9619a3</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-09-17 18:19:20</sys_updated_on>
+        <sys_updated_on>2018-09-17 18:52:45</sys_updated_on>
         <template><![CDATA[<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
 
 
@@ -424,7 +423,7 @@ function getGroupsArray(user){
   </form>
   
   <!--UN-REVIEWED ONLY -->
-  <div ng-show="reviewed(change.id) == false && data.sw == true && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
+  <div ng-if="reviewed(change.id) == false && data.sw == true && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>
@@ -448,9 +447,37 @@ function getGroupsArray(user){
     <a ng-if="reviewed(change.id) == true" ng-click="c.removeReview(change.id)">Set to Un-Reviewed<img src="star.png" width="30" height="30"></a>
     </span>
   </div>
+  
   
  <!--BOTH SWITCHES OFF -->
-  <div ng-show="!data.sw && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
+  <div ng-if="!data.sw && !data.con" ng-repeat="change in data.changes"  class="changeContainer" >
+    <h4>{{change.number}}</h4>
+    <div class="title">
+      <b>{{change.short_description}}</b><br>
+      {{change.description}}
+    </div>
+    <div class="detail" >
+      <b>Implmentation Start: </b>{{change.start}}<br>
+      <b>Implmentation End: </b>{{change.end}}<br>
+      <b>Assignment Group: </b>{{change.group}}<br>
+      <b>Configuration Item: </b>{{change.ci}}<br>
+    </div>
+   
+    
+    <a class="pointer" ng-click="c.open(change.id)">Read More Detail</a>
+    
+    <span class="review pointer">
+      
+      <a ng-if="concerns(change.id) == false" class="concern" ng-click="c.concernChange(change.id)">I have a concern</a>
+      <a ng-if="concerns(change.id) == true" class="concern" ng-click="c.concernRemove(change.id)">Flaged as a concern<img src="alert.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == false" ng-click="c.reviewChange(change.id)">Mark as Reviewed<img src="emptystar.png" width="30" height="30"></a>
+    <a ng-if="reviewed(change.id) == true" ng-click="c.removeReview(change.id)">Set to Un-Reviewed<img src="star.png" width="30" height="30"></a>
+    </span>
+  </div>
+  
+    
+  
+  <div ng-if="(concerns(change.id) == true || reviewed(change.id) == false) && data.con == true && data.sw == true" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>
@@ -476,33 +503,7 @@ function getGroupsArray(user){
   </div>
   
   
-  <div ng-show="(concerns(change.id) == true || reviewed(change.id) == false) && data.con == true && data.sw == true" ng-repeat="change in data.changes" class="changeContainer" >
-    <h4>{{change.number}}</h4>
-    <div class="title">
-      <b>{{change.short_description}}</b><br>
-      {{change.description}}
-    </div>
-    <div class="detail" >
-      <b>Implmentation Start: </b>{{change.start}}<br>
-      <b>Implmentation End: </b>{{change.end}}<br>
-      <b>Assignment Group: </b>{{change.group}}<br>
-      <b>Configuration Item: </b>{{change.ci}}<br>
-    </div>
-   
-    
-    <a class="pointer" ng-click="c.open(change.id)">Read More Detail</a>
-    
-    <span class="review pointer">
-      
-      <a ng-if="concerns(change.id) == false" class="concern" ng-click="c.concernChange(change.id)">I have a concern</a>
-      <a ng-if="concerns(change.id) == true" class="concern" ng-click="c.concernRemove(change.id)">Flaged as a concern<img src="alert.png" width="30" height="30"></a>
-    <a ng-if="reviewed(change.id) == false" ng-click="c.reviewChange(change.id)">Mark as Reviewed<img src="emptystar.png" width="30" height="30"></a>
-    <a ng-if="reviewed(change.id) == true" ng-click="c.removeReview(change.id)">Set to Un-Reviewed<img src="star.png" width="30" height="30"></a>
-    </span>
-  </div>
-  
-  
-  <div ng-show="concerns(change.id) == true && data.con == true && !data.sw" ng-repeat="change in data.changes" class="changeContainer" >
+  <div ng-if="concerns(change.id) == true && data.con == true && !data.sw" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>
