@@ -241,7 +241,7 @@ input[type='checkbox'].switch-control {
 	data.reviewJSON = JSON.stringify(data.review);
 		
 	data.fullReview = [];
-	data.fullReview = ch.getFullReviewList();
+	//data.fullReview = ch.getFullReviewList();
 		
 	data.concernArr = [];
 	data.concernArr = ch.getConcernList();
@@ -393,7 +393,7 @@ function getGroupsArray(user){
         <sys_created_on>2018-07-25 16:11:41</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>077553c9db2f534040f8fcfa0c961943</sys_id>
-        <sys_mod_count>325</sys_mod_count>
+        <sys_mod_count>338</sys_mod_count>
         <sys_name>Change Review Application</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy/>
@@ -401,12 +401,15 @@ function getGroupsArray(user){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sp_widget_077553c9db2f534040f8fcfa0c961943</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-09-17 18:43:07</sys_updated_on>
+        <sys_updated_on>2018-09-18 21:25:35</sys_updated_on>
         <template><![CDATA[<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
 <div>
 <form>
+  <label>Review on behalf of:    </label>
+    
+  
   <select ng-model="data.group" name="Groups">
-    <option ng-model="" value="">All</option>
+    <option ng-model="" value="">All my teams</option>
   <option  value="{{group.id}}" ng-repeat="group in data.groups">{{group.name}}</option>
 </select>
   </form>
@@ -436,9 +439,9 @@ function getGroupsArray(user){
       <b>Assignment Group: </b>{{change.group}}<br>
       <b>Configuration Item: </b>{{change.ci}}<br>
       <b>Risk: </b>{{change.risk}}<br>
-     <div ng-repeat="rChange in data.fullReview">
-       <span ng-show="rChange.change == change.id" ><b>Groups: </b>{{rChange.group}}<br></span>
-      </div>
+    <!-- <div ng-repeat="rChange in data.fullReview">
+       <span ng-if="rChange.change == change.id" ><b>Groups: </b>{{rChange.group}}<br></span>
+      </div>-->
     </div>
    
     
@@ -466,10 +469,10 @@ function getGroupsArray(user){
       <b>Assignment Group: </b>{{change.group}}<br>
       <b>Configuration Item: </b>{{change.ci}}<br>
       <b>Risk: </b>{{change.risk}}<br>
-      <b ng-show="reviewed(change.id)">Groups who have reviewed:</b>
+      <!--<b ng-if="reviewed(change.id)">Groups who have reviewed:</b>
       <div ng-repeat="rChange in data.fullReview">
-       <span ng-show="rChange.change == change.id && rChange.group" >{{rChange.group}}<br></span>
-      </div>
+       <span ng-if="rChange.change == change.id && rChange.group" >{{rChange.group}}<br></span>
+      </div>-->
     </div>
    
     
@@ -497,10 +500,10 @@ function getGroupsArray(user){
       <b>Assignment Group: </b>{{change.group}}<br>
       <b>Configuration Item: </b>{{change.ci}}<br>
       <b>Risk: </b>{{change.risk}}<br>
-       <b ng-show="reviewed(change.id)">Groups who have reviewed:</b>
+       <!--<b ng-if="reviewed(change.id)">Groups who have reviewed:</b>
       <div ng-repeat="rChange in data.fullReview">
-       <span ng-show="rChange.change == change.id && rChange.group" >{{rChange.group}}<br></span>
-      </div>
+       <span ng-if="rChange.change == change.id && rChange.group" >{{rChange.group}}<br></span>
+      </div>-->
     </div>
    
     
