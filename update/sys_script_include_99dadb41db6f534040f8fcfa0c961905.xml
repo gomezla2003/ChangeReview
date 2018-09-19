@@ -17,8 +17,9 @@ Change_Review.prototype = {
 		var crChange = new GlideRecord('change_request');
 		crChange.addEncodedQuery("stateIN10,12,9^type=Normal^ORtype=normal^cmdb_ci.sys_class_name=cmdb_ci_appl^ORcmdb_ci.sys_class_name=u_application_modules^ORcmdb_ci.sys_class_name=u_cmdb_ci_epic_ini^sys_created_on>=javascript:gs.dateGenerate('2018-09-16','00:00:00')");
 		crChange.orderByDesc('start_date');
-		crChange.setLimit(100);
+		//crChange.setLimit(100);
 		crChange.query();
+		
 		
 		while (crChange.next()){
 			var change ={};
@@ -42,7 +43,7 @@ Change_Review.prototype = {
 		var crChange = new GlideRecord('change_request');
 		crChange.addEncodedQuery("stateIN10,12,9^type=Normal^ORtype=normal^cmdb_ci.sys_class_name!=cmdb_ci_appl^cmdb_ci.sys_class_name!=u_application_modules^cmdb_ci.sys_class_name!=u_cmdb_ci_epic_inisys_created_on>=javascript:gs.dateGenerate('2018-09-16','00:00:00')");
 		crChange.orderBy('start_date');
-		crChange.setLimit(100);
+		//crChange.setLimit(100);
 		crChange.query();
 		
 		while (crChange.next()){
@@ -177,7 +178,7 @@ function getGroupsArray(user){
         <sys_created_on>2018-07-25 16:34:58</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>99dadb41db6f534040f8fcfa0c961905</sys_id>
-        <sys_mod_count>72</sys_mod_count>
+        <sys_mod_count>73</sys_mod_count>
         <sys_name>Change_Review</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy>read</sys_policy>
@@ -185,6 +186,6 @@ function getGroupsArray(user){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sys_script_include_99dadb41db6f534040f8fcfa0c961905</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-09-18 22:58:32</sys_updated_on>
+        <sys_updated_on>2018-09-19 02:57:47</sys_updated_on>
     </sys_script_include>
 </record_update>
