@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update>
+<?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_dictionary action="INSERT_OR_UPDATE" element="concern" table="x_sthc_change_revi_change_review_table">
         <active>true</active>
         <array>false</array>
@@ -26,6 +25,8 @@
         <element>concern</element>
         <element_reference>false</element_reference>
         <foreign_database/>
+        <function_definition/>
+        <function_field>false</function_field>
         <internal_type display_value="">boolean</internal_type>
         <mandatory>false</mandatory>
         <max_length>40</max_length>
@@ -48,7 +49,7 @@
         <sys_created_by>LGOMEZ</sys_created_by>
         <sys_created_on>2018-08-03 18:51:56</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
-        <sys_id>1e801a04db37db4096b17d8bbf961970</sys_id>
+        <sys_id>d215dfdadb94a3c0a08eaed15b9619bd</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>Concern</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
@@ -56,8 +57,8 @@
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sys_dictionary_x_sthc_change_revi_change_review_table_concern</sys_update_name>
-        <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-08-03 18:51:56</sys_updated_on>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2018-10-30 16:43:00</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

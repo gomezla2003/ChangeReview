@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update table="sp_widget">
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
         <client_script><![CDATA[function($scope, $window) {
   /* widget controller */
   var c = this;
@@ -61,7 +61,11 @@
 		
 	}
 	
-	
+	c.setDefault = function(id){
+		c.data.setDefault = id;
+		c.server.update();
+		
+	}
 	
 	
 	
@@ -96,7 +100,7 @@
   bottom:-20px;
 }
 
-
+haha.
 //TOGGLE SWITCH 2
 @import url(//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,900);
@@ -115,7 +119,7 @@ body {
 }
 
 form {
-  width: 35%;
+  width: 50%;
   margin: 0 auto;
   background-color: #f6f6f6;
   padding: 1rem;
@@ -230,6 +234,7 @@ input[type='checkbox'].switch-control {
         <script><![CDATA[(function() {
   /* populate the 'data' object */
   /* e.g., data.table = $sp.getValue('table'); */
+	var DefaultGroupName = "change_review_group_default";
 	var ch = new x_sthc_change_revi.Change_Review();
 	if(!input){
 	
@@ -249,6 +254,8 @@ input[type='checkbox'].switch-control {
 		
 		data.groups = [];
 		data.groups = getGroupsArray(gs.getUserID());
+		var defaultGroup = getDefaultGroup(gs.getUserID(),DefaultGroupName,data.groups[0].id);
+		data.group = defaultGroup.toString();
 	}
 
 	if(input){
@@ -284,7 +291,7 @@ input[type='checkbox'].switch-control {
 		}
 		
 		if((input.concern != '')&&(input.concern)){
-			concernChange(input.concern,gs.getUserID());
+			concernChange(input.concern,gs.getUserID(),input.group,ch);
 	    data.concernArr = ch.getConcernList();
 	    data.concernJSON = JSON.stringify(data.concernArr);
 			input.concern = '';
@@ -298,21 +305,29 @@ input[type='checkbox'].switch-control {
 			input.concernR = '';
 			data.concernR = '';
 		}
+		if((input.setDefault != '')&&(input.setDefault)){
+			if(checkExisiting(gs.getUserID(),DefaultGroupName,input.group) == true){
+				gs.addInfoMessage("Your default group has been updated");
+				input.group = '';
+			}
+			else{
+				createDefault(gs.getUserID(),DefaultGroupName,input.group);
+				gs.addInfoMessage("Your default group has been set");
+			}
+		}
 		
 		
 	}
 })();
 
 function reviewChange(id,user,group){
-	var list = getGroups(user,group).split(',');
-	for(i = 1; i<list.length; i++){
-			var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
+	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
 	gr.initialize();
 	gr.setValue('change',id);
 	gr.setValue('user',user);
-	gr.setValue('groups', list[i]);
+	gr.setValue('groups', group);
 	gr.insert();
-	}
+	
 
 }
 
@@ -327,24 +342,31 @@ function removeReview(id,user){
 	
 }
 
-function concernChange(id,user){
-	//var list = getGroups(user);
+function concernChange(id,user,group,ch){
 	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
-	gr.initialize();
-	gr.setValue('change',id);
-	gr.setValue('user',user);
-	gr.setValue('concern',true);
-	//gr.setValue('groups', list);
-	gr.insert();
+	gr.addQuery('change.sys_id',id);
+	gr.addQuery('user.sys_id',user);
+	gr.query();
+	if(gr.next()){
+		gr.setValue('concern',true);
+		gr.update();
+	}
+	else{ 
+		reviewChange(id,user,group);
+		concernChange(id,user);
+		data.review = ch.getReviewList();
+	    data.reviewJSON = JSON.stringify(data.review);
+	}
 }
 
 function removeConcern(id,user){
 	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
-	gr.addQuery('change.sys_id', id);
+	gr.addQuery('change.sys_id',id);
 	gr.addQuery('user.sys_id',user);
 	gr.query();
-	while(gr.next()){
-		gr.deleteRecord();
+	if(gr.next()){
+		gr.setValue('concern',false);
+		gr.update();
 	}
 	
 }
@@ -378,11 +400,47 @@ function getGroupsArray(user){
 	gr.query();
 	while(gr.next()){
 		var group = {};
-		group.id = gr.getUniqueValue();
+		//group.id = gr.getUniqueValue();
+		group.id = gr.getValue('group');
 		group.name = gr.getDisplayValue('group');
 		list.push(group);
 	}
 	return (list);
+	
+}
+
+function checkExisiting(userID,name,groupID){
+	var gr = new GlideRecord('sys_user_preference');
+	gr.addQuery('user',userID);
+	gr.addQuery('name',name);
+	gr.query();
+	if(gr.next()){
+		gr.value = groupID;
+		gr.update();
+		return true;
+	}
+	else
+		return false;
+}
+
+function createDefault(userID,name,groupID){
+	var gr = new GlideRecord('sys_user_preference');
+	gr.initialize();
+	gr.setValue('name',name);
+	gr.setValue('user',userID);
+	gr.setValue('value',groupID);
+	gr.insert();	
+}
+
+function getDefaultGroup(userID,name,id){
+	var gr = new GlideRecord('sys_user_preference');
+	gr.addQuery('user',userID);
+	gr.addQuery('name',name);
+	gr.query();
+	if(gr.next())
+		return gr.value;
+	else
+		return id;
 	
 }
 
@@ -393,7 +451,7 @@ function getGroupsArray(user){
         <sys_created_on>2018-07-25 16:11:41</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>077553c9db2f534040f8fcfa0c961943</sys_id>
-        <sys_mod_count>338</sys_mod_count>
+        <sys_mod_count>393</sys_mod_count>
         <sys_name>Change Review Application</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy/>
@@ -401,17 +459,16 @@ function getGroupsArray(user){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sp_widget_077553c9db2f534040f8fcfa0c961943</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-09-18 21:25:35</sys_updated_on>
-        <template><![CDATA[<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
-<div>
+        <sys_updated_on>2019-05-28 18:47:53</sys_updated_on>
+        <template><![CDATA[<div>
 <form>
   <label>Review on behalf of:    </label>
-    
-  
+
   <select ng-model="data.group" name="Groups">
-    <option ng-model="" value="">All my teams</option>
+    <!--<option ng-model="" value="">All my teams</option> -->
   <option  value="{{group.id}}" ng-repeat="group in data.groups">{{group.name}}</option>
 </select>
+  <a class="pointer" ng-click="c.setDefault(data.group)">Set this as my default group</a>
   </form>
   
  <form>

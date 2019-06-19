@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update>
+<?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_documentation element="groups" label="Groups" language="en" table="x_sthc_change_revi_change_review_table">
         <sys_documentation action="INSERT_OR_UPDATE">
             <element>groups</element>

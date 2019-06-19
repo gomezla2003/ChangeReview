@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update>
+<?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_dictionary action="INSERT_OR_UPDATE" element="groups" table="x_sthc_change_revi_change_review_table">
         <active>true</active>
         <array>false</array>
@@ -31,6 +30,8 @@
         <element>groups</element>
         <element_reference>false</element_reference>
         <foreign_database/>
+        <function_definition/>
+        <function_field>false</function_field>
         <internal_type display_value="Reference">reference</internal_type>
         <mandatory>false</mandatory>
         <max_length>32</max_length>
@@ -53,7 +54,7 @@
         <sys_created_by>LGOMEZ</sys_created_by>
         <sys_created_on>2018-08-20 18:27:20</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
-        <sys_id>a2dd6de9db8423c096b17d8bbf96194d</sys_id>
+        <sys_id>9215dfdadb94a3c0a08eaed15b9619be</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>groups</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
@@ -61,8 +62,8 @@
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sys_dictionary_x_sthc_change_revi_change_review_table_groups</sys_update_name>
-        <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-08-20 18:27:20</sys_updated_on>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2018-10-30 16:43:00</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
