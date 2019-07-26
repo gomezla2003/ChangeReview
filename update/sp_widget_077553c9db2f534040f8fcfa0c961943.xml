@@ -6,6 +6,11 @@
   var c = this;
 	
 	
+	c.groupChange = function(){
+		c.data.selected = c.data.group;
+		c.server.update();
+	}
+
 	c.open = function(id){
 	var h = screen.height - 200;
   var w = screen.width - 900;
@@ -100,7 +105,7 @@
   bottom:-20px;
 }
 
-haha.
+
 //TOGGLE SWITCH 2
 @import url(//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,900);
@@ -108,6 +113,9 @@ haha.
 
 *, *:before, *:after {
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.select{
+ width:40%; 
 }
 
 body {
@@ -236,13 +244,16 @@ input[type='checkbox'].switch-control {
   /* e.g., data.table = $sp.getValue('table'); */
 	var DefaultGroupName = "change_review_group_default";
 	var ch = new x_sthc_change_revi.Change_Review();
-	if(!input){
 	
+	if(!input){
+	var defaultGroup = getDefaultGroup(gs.getUserID(),DefaultGroupName);
+		data.group = defaultGroup.toString();
+		data.selectedGroup = defaultGroup.toString();
+		
 	data.changes = [];
 	data.changes = ch.getAppList();
-		
 	data.review = [];
-  data.review = ch.getReviewList();
+  data.review = ch.getReviewList(data.selectedGroup);
 	data.reviewJSON = JSON.stringify(data.review);
 		
 	data.fullReview = [];
@@ -253,13 +264,17 @@ input[type='checkbox'].switch-control {
 	data.concernJSON = JSON.stringify(data.concernArr);
 		
 		data.groups = [];
-		data.groups = getGroupsArray(gs.getUserID());
-		var defaultGroup = getDefaultGroup(gs.getUserID(),DefaultGroupName,data.groups[0].id);
-		data.group = defaultGroup.toString();
+		//data.groups = getGroupsArray(gs.getUserID());
+		data.groups = ch.getGroupsArray();
+		
+		
 	}
 
 	if(input){
-		
+		if(input.selected){
+			data.review = ch.getReviewList(input.group);
+	    data.reviewJSON = JSON.stringify(data.review);
+		}
 		if(input.reviewAll == true){
 			var cr = new GlideRecord('change_request');
 			cr.addEncodedQuery('stateIN10,12,9^type=Normal^ORtype=normal^cmdb_ci.sys_class_name=cmdb_ci_appl^ORcmdb_ci.sys_class_name=u_application_modules^ORcmdb_ci.sys_class_name=u_cmdb_ci_epic_ini');
@@ -267,7 +282,7 @@ input[type='checkbox'].switch-control {
 			while(cr.next()){
 				reviewChange(cr.sys_id,gs.getUserID());
 			}
-			data.review = ch.getReviewList();
+			data.review = ch.getReviewList(input.group);
 	    data.reviewJSON = JSON.stringify(data.review);
 			input.reviewAll = '';
 			data.reviewAll = '';
@@ -276,15 +291,15 @@ input[type='checkbox'].switch-control {
 		
 		if((input.changeID != '')&&(input.changeID)){
 			reviewChange(input.changeID,gs.getUserID(),input.group);
-			data.review = ch.getReviewList();
+			data.review = ch.getReviewList(input.group);
 	    data.reviewJSON = JSON.stringify(data.review);
 			input.changeID = '';
 			data.changeID = '';
 		}
 		
 			if((input.changeIDr != '')&&(input.changeIDr)){
-			removeReview(input.changeIDr,gs.getUserID());
-			data.review = ch.getReviewList();
+			removeReview(input.changeIDr,gs.getUserID(),input.group);
+			data.review = ch.getReviewList(input.group);
 	    data.reviewJSON = JSON.stringify(data.review);
 			input.changeIDr = '';
 			data.changeIDr = '';
@@ -307,6 +322,7 @@ input[type='checkbox'].switch-control {
 		}
 		if((input.setDefault != '')&&(input.setDefault)){
 			if(checkExisiting(gs.getUserID(),DefaultGroupName,input.group) == true){
+				updateDefault(gs.getUserID(),DefaultGroupName,input.group);
 				gs.addInfoMessage("Your default group has been updated");
 				input.group = '';
 			}
@@ -331,10 +347,11 @@ function reviewChange(id,user,group){
 
 }
 
-function removeReview(id,user){
+function removeReview(id,user,group){
 	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
 	gr.addQuery('change.sys_id', id);
 	gr.addQuery('user.sys_id',user);
+	gr.addQuery('groups.sys_id',group);
 	gr.query();
 	while(gr.next()){
 		gr.deleteRecord();
@@ -390,25 +407,6 @@ function getGroups(user,group){
 	
 }
 
-function getGroupsArray(user){
-	var list = [];
-	var gr = new GlideRecord('sys_user_grmember');
-	gr.addQuery('user.sys_id', user);
-	gr.addQuery('group.u_assign','true');
-	gr.addQuery('group.active','true');
-	gr.addQuery('group.type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
-	gr.query();
-	while(gr.next()){
-		var group = {};
-		//group.id = gr.getUniqueValue();
-		group.id = gr.getValue('group');
-		group.name = gr.getDisplayValue('group');
-		list.push(group);
-	}
-	return (list);
-	
-}
-
 function checkExisiting(userID,name,groupID){
 	var gr = new GlideRecord('sys_user_preference');
 	gr.addQuery('user',userID);
@@ -432,7 +430,19 @@ function createDefault(userID,name,groupID){
 	gr.insert();	
 }
 
-function getDefaultGroup(userID,name,id){
+function updateDefault(userID,name,groupID){
+  var gr = new GlideRecord('sys_user_preference');
+	gr.addQuery('user',userID);
+	gr.addQuery('name',name);
+	gr.query();
+	if(gr.next()){
+		gr.value = groupID;
+	 gr.update();
+	}
+	
+}
+
+function getDefaultGroup(userID,name){
 	var gr = new GlideRecord('sys_user_preference');
 	gr.addQuery('user',userID);
 	gr.addQuery('name',name);
@@ -440,7 +450,7 @@ function getDefaultGroup(userID,name,id){
 	if(gr.next())
 		return gr.value;
 	else
-		return id;
+		return '';
 	
 }
 
@@ -451,7 +461,7 @@ function getDefaultGroup(userID,name,id){
         <sys_created_on>2018-07-25 16:11:41</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>077553c9db2f534040f8fcfa0c961943</sys_id>
-        <sys_mod_count>393</sys_mod_count>
+        <sys_mod_count>484</sys_mod_count>
         <sys_name>Change Review Application</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy/>
@@ -459,16 +469,16 @@ function getDefaultGroup(userID,name,id){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sp_widget_077553c9db2f534040f8fcfa0c961943</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2019-05-28 18:47:53</sys_updated_on>
+        <sys_updated_on>2019-07-25 21:42:34</sys_updated_on>
         <template><![CDATA[<div>
 <form>
   <label>Review on behalf of:    </label>
 
-  <select ng-model="data.group" name="Groups">
-    <!--<option ng-model="" value="">All my teams</option> -->
-  <option  value="{{group.id}}" ng-repeat="group in data.groups">{{group.name}}</option>
+  <select class="select" ng-change="c.groupChange()" ng-model="data.group" name="Groups">
+    
+  <option ng-model="data.selectedGroup" value="{{group.id}}" ng-repeat="group in data.groups">{{group.name}}</option>
 </select>
-  <a class="pointer" ng-click="c.setDefault(data.group)">Set this as my default group</a>
+  <a  class="pointer" ng-click="c.setDefault(data.group)">Set this as my default group</a>
   </form>
   
  <form>

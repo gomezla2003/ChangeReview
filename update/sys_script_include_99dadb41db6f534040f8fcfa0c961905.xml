@@ -87,16 +87,15 @@ Change_Review.prototype = {
 	
 	
 	
-	getReviewList: function(){
+	getReviewList: function(group){
 		
 		var currentUser = gs.getUserID();
-		var groupArray = getGroupsArray(currentUser).split(',');
+		//var groupArray = getGroupsArray(currentUser).split(',');
+		var groupArray = group;
 		var changeSessions = [];
 		var cr = new GlideRecord('x_sthc_change_revi_change_review_table');
-		var or = cr.addQuery('groups','1');
-		for(i = 0; i<groupArray.length; i++){
-		or.addOrCondition('groups.sys_id', groupArray[i]);
-		}
+		cr.addQuery('groups',group);
+		
 		cr.query();
 		while (cr.next()){
 			var rChange = {};
@@ -144,6 +143,24 @@ Change_Review.prototype = {
 		return(changeConcerns);
 	},
 	
+	getGroupsArray: function(){
+			var list = [];
+	var gr = new GlideRecord('sys_user_group');
+	gr.addQuery('u_assign','true');
+	gr.addQuery('active','true');
+	gr.addQuery('type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
+	gr.orderBy('name');
+	gr.query();
+	while(gr.next()){
+		var group = {};
+		group.id = gr.getUniqueValue();
+		group.name = gr.getDisplayValue();
+		list.push(group);
+		//list += ","+gr.getValue();
+	}
+	return (list);
+	},
+	
     type: 'Change_Review'
 };
 
@@ -157,22 +174,23 @@ function getChangeID(change){
 	
 }
 
-function getGroupsArray(user){
+function getGroupsArray(){
 	var list = [];
-	var gr = new GlideRecord('sys_user_grmember');
-	gr.addQuery('user.sys_id', user);
-	gr.addQuery('group.u_assign','true');
-	gr.addQuery('group.active','true');
-	gr.addQuery('group.type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
+	var gr = new GlideRecord('sys_user_group');
+	gr.addQuery('u_assign','true');
+	gr.addQuery('active','true');
+	gr.addQuery('type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
 	gr.query();
 	while(gr.next()){
 		//var group = {};
 		//group.id = gr.getUniqueValue();
 		//group.name = gr.getDisplayValue('group');
 		//list.push(group);
-		list += ","+gr.getValue('group');
+		list += ","+gr.getValue();
 	}
 	return (list);
+	
+	
 	
 }]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
@@ -180,7 +198,7 @@ function getGroupsArray(user){
         <sys_created_on>2018-07-25 16:34:58</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>99dadb41db6f534040f8fcfa0c961905</sys_id>
-        <sys_mod_count>82</sys_mod_count>
+        <sys_mod_count>89</sys_mod_count>
         <sys_name>Change_Review</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy/>
@@ -188,6 +206,6 @@ function getGroupsArray(user){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sys_script_include_99dadb41db6f534040f8fcfa0c961905</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2019-07-11 17:25:06</sys_updated_on>
+        <sys_updated_on>2019-07-23 21:25:31</sys_updated_on>
     </sys_script_include>
 </record_update>

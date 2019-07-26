@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_embedded_help_role">
+    <sys_embedded_help_role action="INSERT_OR_UPDATE">
+        <order>1000</order>
+        <role display_value="sn_dd_changereview_publishtoappstore" name="sn_dd_changereview_publishtoappstore">7625db4edb623f0040f8fcfa0c9619da</role>
+        <sys_class_name>sys_embedded_help_role</sys_class_name>
+        <sys_created_by>LGOMEZ</sys_created_by>
+        <sys_created_on>2019-07-11 18:03:28</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>7a25db4edb623f0040f8fcfa0c9619e8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>7625db4edb623f0040f8fcfa0c9619da</sys_name>
+        <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
+        <sys_update_name>sys_embedded_help_role_7a25db4edb623f0040f8fcfa0c9619e8</sys_update_name>
+        <sys_updated_by>LGOMEZ</sys_updated_by>
+        <sys_updated_on>2019-07-11 18:03:28</sys_updated_on>
+    </sys_embedded_help_role>
+</record_update>
