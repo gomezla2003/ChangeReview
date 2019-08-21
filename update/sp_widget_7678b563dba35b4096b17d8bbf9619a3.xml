@@ -6,6 +6,11 @@
   var c = this;
 	
 	
+	c.groupChange = function(){
+		c.data.selected = c.data.group;
+		c.server.update();
+	}
+
 	c.open = function(id){
 	var h = screen.height - 200;
   var w = screen.width - 900;
@@ -19,6 +24,10 @@
 	}
 	
 	c.reviewChange = function(id){
+		if(!c.data.group){
+			alert("Please select a group first");
+			throw new Error();
+		}
 		c.data.changeID = id;
 		c.server.update();
 	}
@@ -61,7 +70,12 @@
 		
 	}
 	
-
+	c.setDefault = function(id){
+		c.data.setDefault = id;
+		c.server.update();
+		
+	}
+	
 	
 	
 }]]></client_script>
@@ -103,6 +117,9 @@
 *, *:before, *:after {
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
+.select{
+ width:40%; 
+}
 
 body {
   font-family: "Lato", "Helvetica Neue", sans-serif;
@@ -113,7 +130,7 @@ body {
 }
 
 form {
-  width: 35%;
+  width: 50%;
   margin: 0 auto;
   background-color: #f6f6f6;
   padding: 1rem;
@@ -225,29 +242,43 @@ input[type='checkbox'].switch-control {
         <option_schema/>
         <public>false</public>
         <roles/>
-        <script><![CDATA[(function() {
+        <script><![CDATA[
+(function() {
   /* populate the 'data' object */
   /* e.g., data.table = $sp.getValue('table'); */
+	var DefaultGroupName = "change_review_group_default";
 	var ch = new x_sthc_change_revi.Change_Review();
-	if(!input){
 	
+	if(!input){
+	var defaultGroup = getDefaultGroup(gs.getUserID(),DefaultGroupName);
+		data.group = defaultGroup.toString();
+		data.selectedGroup = defaultGroup.toString();
+		
 	data.changes = [];
 	data.changes = ch.getInfraList();
-		
 	data.review = [];
-  data.review = ch.getReviewList();
+  data.review = ch.getReviewList(data.selectedGroup);
 	data.reviewJSON = JSON.stringify(data.review);
+		
+	data.fullReview = [];
+	//data.fullReview = ch.getFullReviewList();
 		
 	data.concernArr = [];
 	data.concernArr = ch.getConcernList();
 	data.concernJSON = JSON.stringify(data.concernArr);
 		
 		data.groups = [];
-		data.groups = getGroupsArray(gs.getUserID());
+		//data.groups = getGroupsArray(gs.getUserID());
+		data.groups = ch.getGroupsArray();
+		
+		
 	}
 
 	if(input){
-		
+		if(input.selected){
+			data.review = ch.getReviewList(input.group);
+	    data.reviewJSON = JSON.stringify(data.review);
+		}
 		if(input.reviewAll == true){
 			var cr = new GlideRecord('change_request');
 			cr.addEncodedQuery('stateIN10,12,9^type=Normal^ORtype=normal^cmdb_ci.sys_class_name!=cmdb_ci_appl^cmdb_ci.sys_class_name!=u_application_modules^cmdb_ci.sys_class_name!=u_cmdb_ci_epic_ini');
@@ -255,7 +286,7 @@ input[type='checkbox'].switch-control {
 			while(cr.next()){
 				reviewChange(cr.sys_id,gs.getUserID());
 			}
-			data.review = ch.getReviewList();
+			data.review = ch.getReviewList(input.group);
 	    data.reviewJSON = JSON.stringify(data.review);
 			input.reviewAll = '';
 			data.reviewAll = '';
@@ -263,23 +294,26 @@ input[type='checkbox'].switch-control {
 		}
 		
 		if((input.changeID != '')&&(input.changeID)){
+		
+			//input.review.push(reviewChange(input.changeID,gs.getUserID(),input.group));
+	   // data.review = input.review;
 			reviewChange(input.changeID,gs.getUserID(),input.group);
-			data.review = ch.getReviewList();
-	    data.reviewJSON = JSON.stringify(data.review);
+			data.review = ch.getReviewList(input.group);
+			data.reviewJSON = JSON.stringify(data.review);
 			input.changeID = '';
 			data.changeID = '';
 		}
 		
 			if((input.changeIDr != '')&&(input.changeIDr)){
-			removeReview(input.changeIDr,gs.getUserID());
-			data.review = ch.getReviewList();
+			removeReview(input.changeIDr,gs.getUserID(),input.group);
+			data.review = ch.getReviewList(input.group);
 	    data.reviewJSON = JSON.stringify(data.review);
 			input.changeIDr = '';
 			data.changeIDr = '';
 		}
 		
 		if((input.concern != '')&&(input.concern)){
-			concernChange(input.concern,gs.getUserID());
+			concernChange(input.concern,gs.getUserID(),input.group,ch);
 	    data.concernArr = ch.getConcernList();
 	    data.concernJSON = JSON.stringify(data.concernArr);
 			input.concern = '';
@@ -293,28 +327,48 @@ input[type='checkbox'].switch-control {
 			input.concernR = '';
 			data.concernR = '';
 		}
+		if((input.setDefault != '')&&(input.setDefault)){
+			if(checkExisiting(gs.getUserID(),DefaultGroupName,input.group) == true){
+				updateDefault(gs.getUserID(),DefaultGroupName,input.group);
+				gs.addInfoMessage("Your default group has been updated");
+				input.group = '';
+			}
+			else{
+				createDefault(gs.getUserID(),DefaultGroupName,input.group);
+				gs.addInfoMessage("Your default group has been set");
+			}
+		}
 		
 		
 	}
 })();
 
 function reviewChange(id,user,group){
-	var list = getGroups(user,group).split(',');
-	for(i = 1; i<list.length; i++){
-			var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
+	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
 	gr.initialize();
 	gr.setValue('change',id);
 	gr.setValue('user',user);
-	gr.setValue('groups', list[i]);
+	gr.setValue('groups', group);
 	gr.insert();
-	}
+	
+		var rChange = {};
+			rChange.change = id;
+			rChange.groups = group
+			rChange.group = gr.groups.name;
 
+return rChange;
 }
 
-function removeReview(id,user){
+		
+		
+		
+		
+
+function removeReview(id,user,group){
 	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
 	gr.addQuery('change.sys_id', id);
 	gr.addQuery('user.sys_id',user);
+	gr.addQuery('groups.sys_id',group);
 	gr.query();
 	while(gr.next()){
 		gr.deleteRecord();
@@ -322,24 +376,31 @@ function removeReview(id,user){
 	
 }
 
-function concernChange(id,user){
-	//var list = getGroups(user);
+function concernChange(id,user,group,ch){
 	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
-	gr.initialize();
-	gr.setValue('change',id);
-	gr.setValue('user',user);
-	gr.setValue('concern',true);
-	//gr.setValue('groups', list);
-	gr.insert();
+	gr.addQuery('change.sys_id',id);
+	gr.addQuery('user.sys_id',user);
+	gr.query();
+	if(gr.next()){
+		gr.setValue('concern',true);
+		gr.update();
+	}
+	else{ 
+		reviewChange(id,user,group);
+		concernChange(id,user);
+		data.review = ch.getReviewList(input.group);
+	    data.reviewJSON = JSON.stringify(data.review);
+	}
 }
 
 function removeConcern(id,user){
 	var gr = new GlideRecord('x_sthc_change_revi_change_review_table');
-	gr.addQuery('change.sys_id', id);
+	gr.addQuery('change.sys_id',id);
 	gr.addQuery('user.sys_id',user);
 	gr.query();
-	while(gr.next()){
-		gr.deleteRecord();
+	if(gr.next()){
+		gr.setValue('concern',false);
+		gr.update();
 	}
 	
 }
@@ -363,21 +424,50 @@ function getGroups(user,group){
 	
 }
 
-function getGroupsArray(user){
-	var list = [];
-	var gr = new GlideRecord('sys_user_grmember');
-	gr.addQuery('user.sys_id', user);
-	gr.addQuery('group.u_assign','true');
-	gr.addQuery('group.active','true');
-	gr.addQuery('group.type','CONTAINS','63345729138ef6847dc7d3228144b0b0');
+function checkExisiting(userID,name,groupID){
+	var gr = new GlideRecord('sys_user_preference');
+	gr.addQuery('user',userID);
+	gr.addQuery('name',name);
 	gr.query();
-	while(gr.next()){
-		var group = {};
-		group.id = gr.getUniqueValue();
-		group.name = gr.getDisplayValue('group');
-		list.push(group);
+	if(gr.next()){
+		gr.value = groupID;
+		gr.update();
+		return true;
 	}
-	return (list);
+	else
+		return false;
+}
+
+function createDefault(userID,name,groupID){
+	var gr = new GlideRecord('sys_user_preference');
+	gr.initialize();
+	gr.setValue('name',name);
+	gr.setValue('user',userID);
+	gr.setValue('value',groupID);
+	gr.insert();	
+}
+
+function updateDefault(userID,name,groupID){
+  var gr = new GlideRecord('sys_user_preference');
+	gr.addQuery('user',userID);
+	gr.addQuery('name',name);
+	gr.query();
+	if(gr.next()){
+		gr.value = groupID;
+	 gr.update();
+	}
+	
+}
+
+function getDefaultGroup(userID,name){
+	var gr = new GlideRecord('sys_user_preference');
+	gr.addQuery('user',userID);
+	gr.addQuery('name',name);
+	gr.query();
+	if(gr.next())
+		return gr.value;
+	else
+		return '';
 	
 }
 
@@ -388,7 +478,7 @@ function getGroupsArray(user){
         <sys_created_on>2018-08-02 03:49:53</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>7678b563dba35b4096b17d8bbf9619a3</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>Change Review Infrastructure</sys_name>
         <sys_package display_value="Change Review" source="x_sthc_change_revi">e67ccfcddbab534040f8fcfa0c9619cd</sys_package>
         <sys_policy/>
@@ -396,19 +486,17 @@ function getGroupsArray(user){
         <sys_scope display_value="Change Review">e67ccfcddbab534040f8fcfa0c9619cd</sys_scope>
         <sys_update_name>sp_widget_7678b563dba35b4096b17d8bbf9619a3</sys_update_name>
         <sys_updated_by>LGOMEZ</sys_updated_by>
-        <sys_updated_on>2018-09-17 18:52:45</sys_updated_on>
-        <template><![CDATA[<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
+        <sys_updated_on>2019-08-21 18:36:46</sys_updated_on>
+        <template><![CDATA[<div>
+<form>
+  <label>Review on behalf of:    </label>
 
-
-<div>
-  
-  <form>
-  <select ng-model="data.group" name="Groups">
-    <option ng-model="" value="">All</option>
-  <option  value="{{group.id}}" ng-repeat="group in data.groups">{{group.name}}</option>
+  <select class="select" ng-change="c.groupChange()" ng-model="data.group" name="Groups">
+    
+  <option ng-model="data.selectedGroup" value="{{group.id}}" ng-repeat="group in data.groups">{{group.name}}</option>
 </select>
+  <a  class="pointer" ng-click="c.setDefault(data.group)">Set this as my default group</a>
   </form>
-  
   
  <form>
   <input ng-model="data.sw" type="checkbox" id="switch" class="switch-control">
@@ -421,7 +509,7 @@ function getGroupsArray(user){
   <form>
      <!--<a class="pointer" ng-click="c.reviewAll()">Review All</a>-->
   </form>
-  
+
   <!--UN-REVIEWED ONLY -->
   <div ng-if="reviewed(change.id) == false && data.sw == true && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
@@ -434,6 +522,10 @@ function getGroupsArray(user){
       <b>Implmentation End: </b>{{change.end}}<br>
       <b>Assignment Group: </b>{{change.group}}<br>
       <b>Configuration Item: </b>{{change.ci}}<br>
+      <b>Risk: </b>{{change.risk}}<br>
+    <!-- <div ng-repeat="rChange in data.fullReview">
+       <span ng-if="rChange.change == change.id" ><b>Groups: </b>{{rChange.group}}<br></span>
+      </div>-->
     </div>
    
     
@@ -448,9 +540,8 @@ function getGroupsArray(user){
     </span>
   </div>
   
-  
  <!--BOTH SWITCHES OFF -->
-  <div ng-if="!data.sw && !data.con" ng-repeat="change in data.changes"  class="changeContainer" >
+  <div ng-if="!data.sw && !data.con" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
     <div class="title">
       <b>{{change.short_description}}</b><br>
@@ -461,6 +552,11 @@ function getGroupsArray(user){
       <b>Implmentation End: </b>{{change.end}}<br>
       <b>Assignment Group: </b>{{change.group}}<br>
       <b>Configuration Item: </b>{{change.ci}}<br>
+      <b>Risk: </b>{{change.risk}}<br>
+      <!--<b ng-if="reviewed(change.id)">Groups who have reviewed:</b>
+      <div ng-repeat="rChange in data.fullReview">
+       <span ng-if="rChange.change == change.id && rChange.group" >{{rChange.group}}<br></span>
+      </div>-->
     </div>
    
     
@@ -475,7 +571,6 @@ function getGroupsArray(user){
     </span>
   </div>
   
-    
   
   <div ng-if="(concerns(change.id) == true || reviewed(change.id) == false) && data.con == true && data.sw == true" ng-repeat="change in data.changes" class="changeContainer" >
     <h4>{{change.number}}</h4>
@@ -488,6 +583,11 @@ function getGroupsArray(user){
       <b>Implmentation End: </b>{{change.end}}<br>
       <b>Assignment Group: </b>{{change.group}}<br>
       <b>Configuration Item: </b>{{change.ci}}<br>
+      <b>Risk: </b>{{change.risk}}<br>
+       <!--<b ng-if="reviewed(change.id)">Groups who have reviewed:</b>
+      <div ng-repeat="rChange in data.fullReview">
+       <span ng-if="rChange.change == change.id && rChange.group" >{{rChange.group}}<br></span>
+      </div>-->
     </div>
    
     
@@ -514,6 +614,7 @@ function getGroupsArray(user){
       <b>Implmentation End: </b>{{change.end}}<br>
       <b>Assignment Group: </b>{{change.group}}<br>
       <b>Configuration Item: </b>{{change.ci}}<br>
+      <b>Risk: </b>{{change.risk}}<br>
     </div>
    
     
